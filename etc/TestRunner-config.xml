@@ -1,0 +1,21 @@
+<flex-config>
+	<output>../target/test/TestRunner.swf</output>
+	<target-player>10.0.0</target-player>
+	<benchmark>false</benchmark>
+	<warnings>true</warnings>
+
+	<compiler>
+		<debug>true</debug>
+		<allow-source-path-overlap>true</allow-source-path-overlap>
+		<verbose-stacktraces>true</verbose-stacktraces>
+		
+		<source-path>
+			<path-element>../src</path-element>
+			<path-element>../test</path-element>
+		</source-path>
+
+		<library-path append="true">
+			<path-element>../lib/asunit-4.0.swc</path-element>
+		</library-path>
+	</compiler>
+</flex-config>

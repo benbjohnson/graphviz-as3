@@ -1,0 +1,63 @@
+<!-- compc +configname=air -load-config+=etc/graphviz-config.xml -->
+<!-- mxmlc +configname=air -load-config+=etc/TestRunner-config.xml test/TestRunner.as -->
+
+<project name="graphviz" basedir="." default="build">
+	<!-- Properties -->
+	<property environment="env"/>
+	<property name="FLEX_HOME" value="${env.FLEX_HOME}"/>
+	<property name="compc.jar" value="${FLEX_HOME}/lib/compc.jar" />
+	<property name="mxmlc.jar" value="${FLEX_HOME}/lib/mxmlc.jar" />
+	<property name="adt.jar" value="${FLEX_HOME}/lib/adt.jar" />
+	<property name="asdoc.jar" value="${FLEX_HOME}/lib/asdoc.jar" />
+
+	<property name="viewer.version" value="0.1.2"/>
+
+	<property name="doc.dir" value="${basedir}/doc"/>
+	<property name="etc.dir" value="${basedir}/etc"/>
+	<property name="lib.dir" value="${basedir}/lib"/>
+	<property name="src.dir" value="${basedir}/src"/>
+	<property name="test.dir" value="${basedir}/test"/>
+	<property name="target.dir" value="${basedir}/target"/>
+
+	<!-- Task Definitions -->
+	<taskdef resource="flexTasks.tasks" classpath="${lib.dir}/flexTasks.jar" />
+
+	<!-- Target: Initialization -->
+	<target name="init">
+		<mkdir dir="${target.dir}"/>
+		<mkdir dir="${target.dir}/test"/>
+
+		<copy file="${etc.dir}/TestRunner-app.xml" tofile="${target.dir}/test/TestRunner-app.xml" overwrite="true"/>
+	</target>
+
+	<!-- Target: Build -->
+	<target name="build" depends="build-swc,build-test-runner"/>
+
+	<target name="build-swc" depends="init">
+		<java jar="${compc.jar}" fork="true" failonerror="true">
+			<jvmarg value="-Xmx1024M"/>
+			<jvmarg value="-Xms512M"/>
+			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+			<arg value="-load-config+=${etc.dir}/graphviz-config.xml"/>
+		</java>
+	</target>
+	
+	<!-- Target: Test -->
+	<target name="build-test-runner" depends="init">
+		<java jar="${mxmlc.jar}" fork="true" failonerror="true">
+			<jvmarg value="-Xmx1024M"/>
+			<jvmarg value="-Xms512M"/>
+			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+			<arg value="+configname=air"/>
+			<arg value="-load-config+=${etc.dir}/TestRunner-config.xml"/>
+			<arg value="${test.dir}/TestRunner.as"/>
+		</java>
+	</target>
+
+
+	<!-- Target: Clean -->
+	<target name="clean">
+		<delete dir="${target.dir}"/>
+		<delete dir="${doc.dir}"/>
+	</target>
+</project>

@@ -1,0 +1,27 @@
+<flex-config>
+	<output>../target/graphviz.swc</output>
+	<target-player>10.0.0</target-player>
+	<benchmark>false</benchmark>
+	<warnings>true</warnings>
+
+	<compiler>
+		<debug>true</debug>
+
+		<keep-generated-actionscript>false</keep-generated-actionscript>
+
+		<source-path>
+			<path-element>../src</path-element>
+		</source-path>
+	</compiler>
+
+	<include-classes>
+		<class>GraphvizClasses</class>
+	</include-classes>
+
+	<metadata>
+		<creator>Ben Johnson</creator>
+		<description>Graphviz Interface for Adobe AIR</description>
+		<language>EN</language>
+		<title>graphviz</title>
+	</metadata>
+</flex-config>
