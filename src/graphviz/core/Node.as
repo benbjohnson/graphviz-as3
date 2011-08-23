@@ -42,5 +42,18 @@ public class Node extends GraphElement
 	//	Methods
 	//
 	//--------------------------------------------------------------------------
+	
+	/** @private */
+	override public function serialize():String
+	{
+		var str:String = elementName;
+		var attr:String = serializeAttributes({});
+		if(attr) {
+			str += " [" + attr + "]";
+		}
+		str += ";";
+
+		return str;
+	}
 }
 }

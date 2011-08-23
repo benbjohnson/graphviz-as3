@@ -39,12 +39,25 @@ public class Graph extends GraphBase
 	}
 
 
+	//----------------------------------
+	//	Directed
+	//----------------------------------
+
+	/**
+	 *	A flag stating if the graph is a directed graph.
+	 */
+	public var directed:Boolean;
+
+
 	//--------------------------------------------------------------------------
 	//
 	//	Methods
 	//
 	//--------------------------------------------------------------------------
 	
-	
+	/** @private */
+	override public function deserialize(value:Object):void
+	{
+	}
 }
 }

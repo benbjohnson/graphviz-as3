@@ -48,9 +48,6 @@ public class DotParser
 			var match:Array;
 			var obj:Object;
 
-			// Clean up line
-			line = line.replace(/^\s+|\s+$/, "");
-
 			// GRAPH
 			if((match = line.match(/^(graph|digraph) *\{$/))) {
 				root = {
@@ -145,6 +142,7 @@ public class DotParser
 		data = data.replace(/\r\n/gsm, "\n");
 		data = data.replace(/\\\n/gsm, "");
 		data = data.replace(/([^;{}])\n\s*/gsm, "$1 ");
+		data = data.replace(/^\s+|\s+$/gm, "");
 		return data;
 	}
 }

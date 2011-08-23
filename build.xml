@@ -10,7 +10,7 @@
 	<property name="adt.jar" value="${FLEX_HOME}/lib/adt.jar" />
 	<property name="asdoc.jar" value="${FLEX_HOME}/lib/asdoc.jar" />
 
-	<property name="viewer.version" value="0.1.2"/>
+	<property name="graphviz.version" value="0.1.0"/>
 
 	<property name="doc.dir" value="${basedir}/doc"/>
 	<property name="etc.dir" value="${basedir}/etc"/>

@@ -14,7 +14,13 @@ public class GraphElement extends Sprite
 	//--------------------------------------------------------------------------
 	
 	/** @private */
-	static public var currentId:uint = 0;
+	static private var currentId:uint = 0;
+
+	/** @private */
+	static public function resetId():void
+	{
+		currentId = 0;
+	}
 	
 	
 	//--------------------------------------------------------------------------
@@ -94,9 +100,22 @@ public class GraphElement extends Sprite
 	}
 	
 	/**
-	 *	Deserializes the node from a DOT formatted string.
+	 *	Serializes all properties in the attributes object into a string of
+	 *	comma-separated, double-quote qualified key value pairs.
 	 */
-	public function deserialize(value:String):void
+	protected function serializeAttributes(attributes:Object):String
+	{
+		var arr:Array = [];
+		for(var key:String in attributes) {
+			arr.push(key + "=\"" + attributes[key].replace("\"", "\\\"") + "\"");
+		}
+		return (arr.length ? arr.join(", ") : null);
+	}
+
+	/**
+	 *	Deserializes the node from an AST object.
+	 */
+	public function deserialize(value:Object):void
 	{
 	}
 }

@@ -66,5 +66,29 @@ public class Edge extends GraphElement
 	 *	node to the head node.
 	 */
 	public var directed:Boolean;
+
+
+	//--------------------------------------------------------------------------
+	//
+	//	Methods
+	//
+	//--------------------------------------------------------------------------
+
+	/** @private */
+	override public function serialize():String
+	{
+		var str:String = "";
+		str += tail.elementName;
+		str += (directed ? " -> " : " -- ");
+		str += head.elementName;
+
+		var attr:String = serializeAttributes({});
+		if(attr) {
+			str += " [" + attr + "]";
+		}
+		str += ";";
+
+		return str;
+	}
 }
 }

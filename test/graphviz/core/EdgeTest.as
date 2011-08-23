@@ -2,7 +2,7 @@ package graphviz.core
 {
 import asunit.framework.Assert;
 
-public class NodeTest
+public class EdgeTest
 {
 	//---------------------------------------------------------------------
 	//
@@ -10,13 +10,17 @@ public class NodeTest
 	//
 	//---------------------------------------------------------------------
 	
-	private var node:Node;
+	private var edge:Edge;
+	private var tail:Node;
+	private var head:Node;
 	
 	[Before]
 	public function setup():void
 	{
-		node = new Node();
 		GraphElement.resetId();
+		tail = new Node();
+		head = new Node();
+		edge = new Edge(tail, head);
 	}
 
 
@@ -31,9 +35,17 @@ public class NodeTest
 	//----------------------------------
 	
 	[Test]
-	public function shouldSerialize():void
+	public function shouldSerializeUndirected():void
 	{
-		Assert.assertEquals("node1;", node.serialize());
+		edge.directed = false;
+		Assert.assertEquals("node1 -- node2;", edge.serialize());
+	}
+	
+	[Test]
+	public function shouldSerializeDirected():void
+	{
+		edge.directed = true;
+		Assert.assertEquals("node1 -> node2;", edge.serialize());
 	}
 }
 }

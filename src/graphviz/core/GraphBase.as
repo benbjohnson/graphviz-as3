@@ -207,5 +207,44 @@ public class GraphBase extends GraphElement
 			removeSubgraph(subgraph);
 		}
 	}
+
+
+	//---------------------------------
+	//	Serialization
+	//---------------------------------
+
+	/** @private */
+	override public function serialize():String
+	{
+		var arr:Array = [];
+
+		if(this is Graph) {
+			arr.push(((this as Graph).directed ? "digraph" : "graph") + " {");
+		}
+		else {
+			arr.push("subgraph " + elementName + " {");
+		}
+
+		// Serialize children
+		for each(var subgraph:Subgraph in subgraphs) {
+			arr.push(indent(subgraph.serialize()));
+		}
+		for each(var node:Node in nodes) {
+			arr.push(indent(node.serialize()));
+		}
+		for each(var edge:Edge in edges) {
+			arr.push(indent(edge.serialize()));
+		}
+
+		// Closing brace
+		arr.push("}");
+		
+		return arr.join("\n");
+	}
+	
+	private function indent(value:String):String
+	{
+		return value.replace(/^/gm, "  ");
+	}
 }
 }
