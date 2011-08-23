@@ -1,0 +1,5 @@
+digraph {
+	subgraph subgraph1 {
+		graph [dpi=72];
+	}
+}

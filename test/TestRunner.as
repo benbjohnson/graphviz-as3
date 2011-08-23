@@ -1,6 +1,6 @@
 package
 {
-import mockdown.GraphvizSuite;
+import graphviz.GraphvizSuite;
 import asunit.core.TextCore;
 import flash.display.Sprite;
 

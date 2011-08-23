@@ -1,0 +1,4 @@
+digraph {
+	foo [pos="63,308"];
+	bar [label="baz"];
+}

@@ -1,0 +1,7 @@
+digraph {
+	foo;
+	bar;
+	baz;
+	foo -> bar [pos="2,34"];
+	bar -- baz [pos="100,200"];
+}

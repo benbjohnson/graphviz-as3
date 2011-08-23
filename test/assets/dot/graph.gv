@@ -1,0 +1,7 @@
+graph {
+	graph [dpi=72];
+	graph [bb="0,0,216,401",
+		_draw_="c 9 -#ffffffff C 9 -#ffffffff P 4 0 -1 0 401\
+ 217 401 217 -1 ",
+		xdotversion="1.2"];
+}
