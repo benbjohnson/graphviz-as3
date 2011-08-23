@@ -122,6 +122,33 @@ public class GraphBase extends GraphElement
 		}
 	}
 
+	/**
+	 *	Recursively searches the graph hierarchy for a node with a given name.
+	 *
+	 *	@param name  The element name of the node.
+	 */
+	public function findNode(name:String):Node
+	{
+		var node:Node;
+		
+		// Search direct children
+		for each(node in _nodes) {
+			if(node.elementName == name) {
+				return node;
+			}
+		}
+		
+		// Search nodes in subgraphs
+		for each(var subgraph:Subgraph in _subgraphs) {
+			node = subgraph.findNode(name);
+			if(node) {
+				return node;
+			}
+		}
+		
+		return null;
+	}
+
 
 	//---------------------------------
 	//	Edges
@@ -165,6 +192,37 @@ public class GraphBase extends GraphElement
 		}
 	}
 
+	/**
+	 *	Recursively searches the graph hierarchy for an edge.
+	 *
+	 *	@param tail  The element name of the tail node.
+	 *	@param head  The element name of the head node.
+	 */
+	public function findEdge(tail:String, head:String):Edge
+	{
+		var edge:Edge;
+		
+		// Search direct children
+		for each(edge in _edges) {
+			edge.tail.elementName;
+			edge.head.elementName;
+
+			if(edge.tail.elementName == tail && edge.head.elementName == head) {
+				return edge;
+			}
+		}
+		
+		// Search edges in subgraphs
+		for each(var subgraph:Subgraph in _subgraphs) {
+			edge = subgraph.findEdge(tail, head);
+			if(edge) {
+				return edge;
+			}
+		}
+		
+		return null;
+	}
+
 
 	//---------------------------------
 	//	Subgraphs
@@ -206,6 +264,29 @@ public class GraphBase extends GraphElement
 		for each(var subgraph:Subgraph in subgraphs) {
 			removeSubgraph(subgraph);
 		}
+	}
+
+	/**
+	 *	Recursively searches the graph hierarchy for a subgraph with a given name.
+	 *
+	 *	@param name  The element name of the subgraph.
+	 */
+	public function findSubgraph(name:String):Subgraph
+	{
+		// Search direct subgraphs
+		for each(var subgraph:Subgraph in _subgraphs) {
+			if(subgraph.elementName == name) {
+				return subgraph;
+			}
+			
+			// Search children
+			var child:Subgraph = subgraph.findSubgraph(name);
+			if(child) {
+				return child;
+			}
+		}
+		
+		return null;
 	}
 
 
