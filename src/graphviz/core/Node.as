@@ -47,7 +47,7 @@ public class Node extends GraphElement
 	override public function serialize():String
 	{
 		var str:String = elementName;
-		var attr:String = serializeAttributes({});
+		var attr:String = serializeAttributes();
 		if(attr) {
 			str += " [" + attr + "]";
 		}

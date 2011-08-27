@@ -1,5 +1,5 @@
-<!-- compc +configname=air -load-config+=etc/graphviz-config.xml -->
 <!-- mxmlc +configname=air -load-config+=etc/TestRunner-config.xml test/TestRunner.as -->
+<!-- compc +configname=air -load-config+=etc/graphviz-config.xml -->
 
 <project name="graphviz" basedir="." default="build">
 	<!-- Properties -->

@@ -82,7 +82,7 @@ public class Edge extends GraphElement
 		str += (directed ? " -> " : " -- ");
 		str += head.elementName;
 
-		var attr:String = serializeAttributes({});
+		var attr:String = serializeAttributes();
 		if(attr) {
 			str += " [" + attr + "]";
 		}

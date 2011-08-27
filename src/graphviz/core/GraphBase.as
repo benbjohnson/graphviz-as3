@@ -94,6 +94,7 @@ public class GraphBase extends GraphElement
 		if(_nodes.indexOf(node) == -1) {
 			node.graph = this;
 			_nodes.push(node);
+			addChild(node);
 		}
 	}
 
@@ -108,6 +109,7 @@ public class GraphBase extends GraphElement
 		if(index != -1) {
 			node.graph = null;
 			_nodes.splice(index, 1);
+			removeChild(node);
 		}
 	}
 
@@ -164,6 +166,7 @@ public class GraphBase extends GraphElement
 		if(_edges.indexOf(edge) == -1) {
 			edge.graph = this;
 			_edges.push(edge);
+			addChild(edge);
 		}
 	}
 
@@ -178,6 +181,7 @@ public class GraphBase extends GraphElement
 		if(index != -1) {
 			edge.graph = null;
 			_edges.splice(index, 1);
+			removeChild(edge);
 		}
 	}
 
@@ -238,6 +242,7 @@ public class GraphBase extends GraphElement
 		if(_subgraphs.indexOf(subgraph) == -1) {
 			subgraph.graph = this;
 			_subgraphs.push(subgraph);
+			addChild(subgraph);
 		}
 	}
 
@@ -252,6 +257,7 @@ public class GraphBase extends GraphElement
 		if(index != -1) {
 			subgraph.graph = null;
 			_subgraphs.splice(index, 1);
+			removeChild(subgraph);
 		}
 	}
 
@@ -299,11 +305,18 @@ public class GraphBase extends GraphElement
 	{
 		var arr:Array = [];
 
+		// Initial graph keyword
 		if(this is Graph) {
 			arr.push(((this as Graph).directed ? "digraph" : "graph") + " {");
 		}
 		else {
 			arr.push("subgraph " + elementName + " {");
+		}
+
+		// Serialize attributes within graph
+		var attr:String = serializeAttributes();
+		if(attr) {
+			arr.push(indent("graph [" + attr + "];"));
 		}
 
 		// Serialize children

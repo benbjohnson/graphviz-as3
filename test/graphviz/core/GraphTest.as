@@ -36,6 +36,7 @@ public class GraphTest
 		graph.directed = false;
 		Assert.assertEquals(
 			"graph {\n" +
+			"  graph [dpi=\"72\"];\n" +
 			"}",
 			graph.serialize()
 		);
@@ -47,6 +48,7 @@ public class GraphTest
 		graph.directed = true;
 		Assert.assertEquals(
 			"digraph {\n" +
+			"  graph [dpi=\"72\"];\n" +
 			"}",
 			graph.serialize()
 		);
@@ -71,6 +73,7 @@ public class GraphTest
 
 		Assert.assertEquals(
 			"digraph {\n" +
+			"  graph [dpi=\"72\"];\n" +
 			"  subgraph subgraph1 {\n" +
 			"    node2;\n" +
 			"    node3;\n" +

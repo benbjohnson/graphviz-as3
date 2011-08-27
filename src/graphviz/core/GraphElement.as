@@ -1,6 +1,7 @@
 package graphviz.core
 {
 import flash.display.Sprite;
+import flash.geom.Point;
 
 /**
  *	This class represents the base class for all elements on a graph.
@@ -85,11 +86,72 @@ public class GraphElement extends Sprite
 	}
 
 
+	//----------------------------------
+	//	Attributes
+	//----------------------------------
+
+	/**
+	 *	A hash of key/value pairs representing attributes on this element.
+	 */
+	public function get attributes():Object
+	{
+		return {};
+	}
+
+
 	//--------------------------------------------------------------------------
 	//
 	//	Methods
 	//
 	//--------------------------------------------------------------------------
+
+	//----------------------------------
+	//	Dimensions
+	//----------------------------------
+
+	/**
+	 *	Converts a local point to the absolute position within the graph.
+	 *
+	 *	@param point  The local point on this element.
+	 *
+	 *	@return       The absolute position for a point within the whole graph.
+	 */
+	public function toGlobal(point:Point):Point
+	{
+		var ret:Point = new Point(point.x, point.y);
+		var element:GraphElement = this;
+		while(element.graph) {
+			ret.x += element.x;
+			ret.y += element.y;
+			element = element.graph;
+		}
+		return ret;
+	}
+	
+	/**
+	 *	Converts a global point within the graph to a local point on this element.
+	 *
+	 *	@param point  The global point on the graph.
+	 *
+	 *	@return       The local position for a point within this element.
+	 */
+	public function toLocal(point:Point):Point
+	{
+		var ret:Point = new Point(point.x, point.y);
+		var element:GraphElement = this;
+		while(element.graph) {
+			ret.x -= element.x;
+			ret.y -= element.y;
+			element = element.graph;
+		}
+		return ret;
+	}
+	
+
+
+	//----------------------------------
+	//	Serialization
+	//----------------------------------
 
 	/**
 	 *	Serializes the element into a DOT string format.
@@ -103,9 +165,10 @@ public class GraphElement extends Sprite
 	 *	Serializes all properties in the attributes object into a string of
 	 *	comma-separated, double-quote qualified key value pairs.
 	 */
-	protected function serializeAttributes(attributes:Object):String
+	protected function serializeAttributes():String
 	{
 		var arr:Array = [];
+		var attributes:Object = this.attributes;
 		for(var key:String in attributes) {
 			arr.push(key + "=\"" + attributes[key].replace("\"", "\\\"") + "\"");
 		}
