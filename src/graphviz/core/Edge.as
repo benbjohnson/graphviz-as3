@@ -78,7 +78,6 @@ public class Edge extends GraphElement
 	override public function serialize():String
 	{
 		var str:String = "";
-		trace("ser: " + tail + " : " + head);
 		str += tail.elementName;
 		str += (directed ? " -> " : " -- ");
 		str += head.elementName;

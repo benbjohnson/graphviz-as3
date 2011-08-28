@@ -111,8 +111,6 @@ public class Dot extends EventDispatcher
 	 */
 	public function execute():void
 	{
-		trace("execute: " + executable);
-		
 		if(!executable) {
 			return;
 		}

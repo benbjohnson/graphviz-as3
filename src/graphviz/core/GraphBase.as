@@ -3,6 +3,7 @@ package graphviz.core
 import flash.events.EventDispatcher;
 import flash.display.DisplayObject;
 import flash.geom.Point;
+import flash.errors.IllegalOperationError;
 
 /**
  *	This class contains the base functionality for all graphs and subgraphs.
@@ -247,12 +248,37 @@ public class GraphBase extends GraphElement
 	override public function deserialize(value:Object):void
 	{
 		// Set bounding box
-		if(attributes.bb != null) {
-			var arr:Array = attributes.bb.split(",").map(function(item:String,...args):int{return parseInt(item)});
-			var point:Point = new Point(parseInt(arr[0]), parseInt(arr[3]));
-			point = toLocal(point);
-			x = point.x;
-			y = point.y;
+		if(value.attributes.bb != null) {
+			var arr:Array = value.attributes.bb.split(",").map(function(item:String,...args):int{return parseInt(item)});
+			
+			if(!(this is Graph)) {
+				var point:Point = new Point(parseInt(arr[0]), parseInt(arr[3]));
+				point = toLocal(normalizeCoord(point));
+				x = point.x;
+				y = point.y;
+			}
+			
+			width = arr[2]-arr[0];
+			height = arr[3]-arr[1];
+		}
+		
+		// Deserialize children
+		for each(var childValue:Object in value.children) {
+			var child:GraphElement;
+			switch(childValue.type) {
+				case 'SUBGRAPH': child = findSubgraph(childValue.id); break;
+				case 'NODE': child = findNode(childValue.id); break;
+				case 'EDGE': child = findEdge(childValue.tail, childValue.head); break;
+				default: throw new IllegalOperationError("Invalid serialization type: " + childValue.type);
+			}
+			
+			// If child is found, pass off deserialization data.
+			if(child) {
+				child.deserialize(childValue);
+			}
+			else {
+				throw new IllegalOperationError("Cannot find child for serialization: " + (childValue.type == "EDGE" ? childValue.tail + "-" + childValue.head : childValue.id));
+			}
 		}
 	}
 }

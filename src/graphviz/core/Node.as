@@ -31,42 +31,6 @@ public class Node extends GraphElement
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
-	//	Width
-	//----------------------------------
-
-	private var _width:Number = 0;
-
-	/** @private */
-	override public function get width():Number
-	{
-		return _width;
-	}
-
-	override public function set width(value:Number):void
-	{
-		_width = value;
-	}
-
-
-	//----------------------------------
-	//	Height
-	//----------------------------------
-
-	private var _height:Number = 0;
-
-	/** @private */
-	override public function get height():Number
-	{
-		return _height;
-	}
-
-	override public function set height(value:Number):void
-	{
-		_height = value;
-	}
-
-
-	//----------------------------------
 	//	Element name
 	//----------------------------------
 
@@ -127,14 +91,14 @@ public class Node extends GraphElement
 		super.deserialize(value);
 		
 		// Set position
-		if(attributes.pos != null) {
-			var arr:Array = attributes.pos.split(",");
+		if(value.attributes.pos != null) {
+			var arr:Array = value.attributes.pos.split(",");
 			var point:Point = new Point(parseInt(arr[0]), parseInt(arr[1]));
-			point = toLocal(point);
+			point = toLocal(normalizeCoord(point));
 			
 			// "pos" is specified as the center point. Convert to upper left.
 			x = point.x - (width/2);
-			y = point.y - (width/2);
+			y = point.y - (height/2);
 		}
 	}
 }

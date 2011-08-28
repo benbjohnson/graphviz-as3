@@ -95,22 +95,10 @@ public class Graph extends GraphBase
 		var dot:Dot = new Dot(this);
 		dot.addEventListener(Event.COMPLETE,
 			function(event:Event):void{
-				trace("from dot complete");
 				dispatchEvent(new Event(Event.COMPLETE));
 			}
 		);
 		dot.execute();
-	}
-	
-
-	//----------------------------------
-	//	Serialization
-	//----------------------------------
-	
-	/** @private */
-	override public function deserialize(value:Object):void
-	{
-		trace("deserialize: " + value);
 	}
 }
 }

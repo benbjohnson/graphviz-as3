@@ -150,5 +150,36 @@ public class GraphBaseTest
 		graph.subgraphs[0].addChild(new Subgraph());
 		Assert.assertEquals(graph.subgraphs[0].subgraphs[0], graph.findSubgraph("subgraph2"));
 	}
+
+
+	//---------------------------------
+	//	Deserialization
+	//---------------------------------
+
+	[Test]
+	public function shouldDeserializeDimensions():void
+	{
+		var graph:Graph = new Graph();
+		var subgraph:Subgraph = new Subgraph();
+		graph.addChild(subgraph);
+		graph.deserialize({
+			type:'GRAPH',
+			attributes:{bb:"0,0,200,300"},
+			children:[
+				{
+					type:'SUBGRAPH',
+					id:subgraph.elementName,
+					attributes:{bb:"10,20,40,50"}
+				}
+			]
+		});
+
+		Assert.assertEquals(200, graph.width);
+		Assert.assertEquals(300, graph.height);
+		Assert.assertEquals(10, subgraph.x);
+		Assert.assertEquals(250, subgraph.y);
+		Assert.assertEquals(30, subgraph.width);
+		Assert.assertEquals(30, subgraph.height);
+	}
 }
 }

@@ -86,5 +86,44 @@ public class NodeTest
 		node.height = 23;
 		Assert.assertEquals("node1 [width=\"0.75\", height=\"0.319\"];", node.serialize());
 	}
+
+
+	//----------------------------------
+	//	Deserialization
+	//----------------------------------
+	
+	[Test]
+	public function shouldDeserializePosition():void
+	{
+		var graph:Graph = new Graph();
+		var subgraph:Subgraph = new Subgraph();
+		var node:Node = new Node();
+		node.width = 4;
+		node.height = 6;
+		graph.addChild(subgraph);
+		subgraph.addChild(node);
+		
+		graph.deserialize({
+			type:'GRAPH',
+			attributes:{bb:"0,0,100,100"},
+			children:[
+				{
+					type:'SUBGRAPH',
+					id:subgraph.elementName,
+					attributes:{bb:"10,20,80,60"},
+					children:[
+						{
+							type:'NODE',
+							id:node.elementName,
+							attributes:{pos:"20,30"}
+						}
+					]
+				}
+			]
+		});
+
+		Assert.assertEquals(8, node.x);
+		Assert.assertEquals(27, node.y);
+	}
 }
 }

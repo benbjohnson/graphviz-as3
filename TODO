@@ -1,3 +1,1 @@
-* Measure nodes before layout.
-* Pass in node widths to layout.
-* Set position of nodes after returned from layout.
+* Add tests for node x/y returned from pos.

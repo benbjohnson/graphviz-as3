@@ -48,6 +48,42 @@ public class GraphElement extends Sprite
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
+	//	Width
+	//----------------------------------
+
+	private var _width:Number = 0;
+
+	/** @private */
+	override public function get width():Number
+	{
+		return _width;
+	}
+
+	override public function set width(value:Number):void
+	{
+		_width = value;
+	}
+
+
+	//----------------------------------
+	//	Height
+	//----------------------------------
+
+	private var _height:Number = 0;
+
+	/** @private */
+	override public function get height():Number
+	{
+		return _height;
+	}
+
+	override public function set height(value:Number):void
+	{
+		_height = value;
+	}
+
+
+	//----------------------------------
 	//	Graph
 	//----------------------------------
 
@@ -118,8 +154,26 @@ public class GraphElement extends Sprite
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
-	//	Dimensions
+	//	Position
 	//----------------------------------
+
+	/**
+	 *	Converts a DOT coordinate (lower-left) to a Flash
+	 *	coordinate (upper-left). The element must be attached to a graph when
+	 *	this method is called.
+	 *
+	 *	@param point  The DOT formatted coordinate.
+	 *
+	 *	@return       The Flash formatted coordinate.
+	 */
+	public function normalizeCoord(point:Point):Point
+	{
+		var graph:Graph = this.graph;
+		if(graph) {
+			return new Point(point.x, graph.height-point.y);
+		}
+		return null;
+	}
 
 	/**
 	 *	Converts a local point to the absolute position within the graph.
@@ -209,14 +263,6 @@ public class GraphElement extends Sprite
 	 */
 	public function deserialize(value:Object):void
 	{
-		// Set position
-		if(attributes.pos != null) {
-			var arr:Array = attributes.pos.split(",");
-			var point:Point = new Point(parseInt(arr[0]), parseInt(arr[1]));
-			point = toLocal(point);
-			x = point.x;
-			y = point.y;
-		}
 	}
 }
 }
