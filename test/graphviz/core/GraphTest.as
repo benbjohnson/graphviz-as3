@@ -60,29 +60,29 @@ public class GraphTest
 		graph.directed = true;
 		
 		var subgraph:Subgraph = new Subgraph();
-		subgraph.addNode(new Node());
-		subgraph.addNode(new Node());
-		subgraph.addNode(new Node());
-		subgraph.addEdge(new Edge(subgraph.nodes[0], subgraph.nodes[1], true));
-		subgraph.addEdge(new Edge(subgraph.nodes[0], subgraph.nodes[2], false));
-		graph.addSubgraph(subgraph);
+		subgraph.addChild(new Node());
+		subgraph.addChild(new Node());
+		subgraph.addChild(new Node());
+		subgraph.addChild(new Edge(subgraph.nodes[0], subgraph.nodes[1], true));
+		subgraph.addChild(new Edge(subgraph.nodes[0], subgraph.nodes[2], false));
+		graph.addChild(subgraph);
 		
-		graph.addNode(new Node());
-		graph.addNode(new Node());
-		graph.addEdge(new Edge(graph.nodes[0], graph.nodes[1]));
+		graph.addChild(new Node());
+		graph.addChild(new Node());
+		graph.addChild(new Edge(graph.nodes[0], graph.nodes[1]));
 
 		Assert.assertEquals(
 			"digraph {\n" +
 			"  graph [dpi=\"72\"];\n" +
 			"  subgraph subgraph1 {\n" +
-			"    node2;\n" +
-			"    node3;\n" +
-			"    node4;\n" +
+			"    node2 [width=\"0\", height=\"0\"];\n" +
+			"    node3 [width=\"0\", height=\"0\"];\n" +
+			"    node4 [width=\"0\", height=\"0\"];\n" +
 			"    node2 -> node3;\n" +
 			"    node2 -- node4;\n" +
 			"  }\n" +
-			"  node5;\n" +
-			"  node6;\n" +
+			"  node5 [width=\"0\", height=\"0\"];\n" +
+			"  node6 [width=\"0\", height=\"0\"];\n" +
 			"  node5 -- node6;\n" +
 			"}",
 			graph.serialize()

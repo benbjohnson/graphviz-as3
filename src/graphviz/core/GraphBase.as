@@ -1,6 +1,8 @@
 package graphviz.core
 {
 import flash.events.EventDispatcher;
+import flash.display.DisplayObject;
+import flash.geom.Point;
 
 /**
  *	This class contains the base functionality for all graphs and subgraphs.
@@ -29,49 +31,59 @@ public class GraphBase extends GraphElement
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
-	//	Nodes
+	//	Children
 	//----------------------------------
 
-	private var _nodes:Array = [];
+	/**
+	 *	A list of all direct graph element children in this graph.
+	 */
+	public function get children():Array
+	{
+		var children:Array = [];
+		for(var i:int=0; i<numChildren; i++) {
+			var child:DisplayObject = getChildAt(i);
+			if(child is GraphElement) {
+				children.push(getChildAt(i));
+			}
+		}
+		return children;
+	}
 
 	/**
 	 *	A list of nodes on the graph.
 	 */
 	public function get nodes():Array
 	{
-		return _nodes.slice();
+		return children.filter(
+			function(item:DisplayObject,...args):Boolean{
+				return item is Node;
+			}
+		);
 	}
-
-
-	//----------------------------------
-	//	Edges
-	//----------------------------------
-
-	private var _edges:Array = [];
 
 	/**
 	 *	A list of edges on the graph.
 	 */
 	public function get edges():Array
 	{
-		return _edges.slice();
+		return children.filter(
+			function(item:DisplayObject,...args):Boolean{
+				return item is Edge;
+			}
+		);
 	}
-
-
-	//----------------------------------
-	//	Subgraphs
-	//----------------------------------
-
-	private var _subgraphs:Array = [];
 
 	/**
 	 *	A list of subgraphs on the graph.
 	 */
 	public function get subgraphs():Array
 	{
-		return _subgraphs.slice();
+		return children.filter(
+			function(item:DisplayObject,...args):Boolean{
+				return item is Subgraph;
+			}
+		);
 	}
-
 
 
 	//--------------------------------------------------------------------------
@@ -85,46 +97,6 @@ public class GraphBase extends GraphElement
 	//---------------------------------
 
 	/**
-	 *	Adds a node to the graph.
-	 *
-	 *	@param node  The node to add.
-	 */
-	public function addNode(node:Node):void
-	{
-		if(_nodes.indexOf(node) == -1) {
-			node.graph = this;
-			_nodes.push(node);
-			addChild(node);
-		}
-	}
-
-	/**
-	 *	Removes a node from the graph.
-	 *
-	 *	@param node  The node to remove.
-	 */
-	public function removeNode(node:Node):void
-	{
-		var index:int = _nodes.indexOf(node);
-		if(index != -1) {
-			node.graph = null;
-			_nodes.splice(index, 1);
-			removeChild(node);
-		}
-	}
-
-	/**
-	 *	Removes all nodes from the graph.
-	 */
-	public function removeAllNodes():void
-	{
-		var nodes:Array = this.nodes;
-		for each(var node:Node in nodes) {
-			removeNode(node);
-		}
-	}
-
-	/**
 	 *	Recursively searches the graph hierarchy for a node with a given name.
 	 *
 	 *	@param name  The element name of the node.
@@ -134,14 +106,16 @@ public class GraphBase extends GraphElement
 		var node:Node;
 		
 		// Search direct children
-		for each(node in _nodes) {
+		var nodes:Array = this.nodes;
+		for each(node in nodes) {
 			if(node.elementName == name) {
 				return node;
 			}
 		}
 		
 		// Search nodes in subgraphs
-		for each(var subgraph:Subgraph in _subgraphs) {
+		var subgraphs:Array = this.subgraphs;
+		for each(var subgraph:Subgraph in subgraphs) {
 			node = subgraph.findNode(name);
 			if(node) {
 				return node;
@@ -157,46 +131,6 @@ public class GraphBase extends GraphElement
 	//---------------------------------
 
 	/**
-	 *	Adds an edge to the graph.
-	 *
-	 *	@param edge  The edge to add.
-	 */
-	public function addEdge(edge:Edge):void
-	{
-		if(_edges.indexOf(edge) == -1) {
-			edge.graph = this;
-			_edges.push(edge);
-			addChild(edge);
-		}
-	}
-
-	/**
-	 *	Removes a edge from the graph.
-	 *
-	 *	@param edge  The edge to remove.
-	 */
-	public function removeEdge(edge:Edge):void
-	{
-		var index:int = _edges.indexOf(edge);
-		if(index != -1) {
-			edge.graph = null;
-			_edges.splice(index, 1);
-			removeChild(edge);
-		}
-	}
-
-	/**
-	 *	Removes all edges from the graph.
-	 */
-	public function removeAllEdges():void
-	{
-		var edges:Array = this.edges;
-		for each(var edge:Edge in edges) {
-			removeEdge(edge);
-		}
-	}
-
-	/**
 	 *	Recursively searches the graph hierarchy for an edge.
 	 *
 	 *	@param tail  The element name of the tail node.
@@ -207,7 +141,8 @@ public class GraphBase extends GraphElement
 		var edge:Edge;
 		
 		// Search direct children
-		for each(edge in _edges) {
+		var edges:Array = this.edges;
+		for each(edge in edges) {
 			edge.tail.elementName;
 			edge.head.elementName;
 
@@ -217,7 +152,8 @@ public class GraphBase extends GraphElement
 		}
 		
 		// Search edges in subgraphs
-		for each(var subgraph:Subgraph in _subgraphs) {
+		var subgraphs:Array = this.subgraphs;
+		for each(var subgraph:Subgraph in subgraphs) {
 			edge = subgraph.findEdge(tail, head);
 			if(edge) {
 				return edge;
@@ -233,46 +169,6 @@ public class GraphBase extends GraphElement
 	//---------------------------------
 
 	/**
-	 *	Adds a subgraph to the graph.
-	 *
-	 *	@param subgraph  The subgraph to add.
-	 */
-	public function addSubgraph(subgraph:Subgraph):void
-	{
-		if(_subgraphs.indexOf(subgraph) == -1) {
-			subgraph.graph = this;
-			_subgraphs.push(subgraph);
-			addChild(subgraph);
-		}
-	}
-
-	/**
-	 *	Removes a subgraph from the graph.
-	 *
-	 *	@param subgraph  The subgraph to remove.
-	 */
-	public function removeSubgraph(subgraph:Subgraph):void
-	{
-		var index:int = _subgraphs.indexOf(subgraph);
-		if(index != -1) {
-			subgraph.graph = null;
-			_subgraphs.splice(index, 1);
-			removeChild(subgraph);
-		}
-	}
-
-	/**
-	 *	Removes all subgraphs from the graph.
-	 */
-	public function removeAllSubgraphs():void
-	{
-		var subgraphs:Array = this.subgraphs;
-		for each(var subgraph:Subgraph in subgraphs) {
-			removeSubgraph(subgraph);
-		}
-	}
-
-	/**
 	 *	Recursively searches the graph hierarchy for a subgraph with a given name.
 	 *
 	 *	@param name  The element name of the subgraph.
@@ -280,7 +176,8 @@ public class GraphBase extends GraphElement
 	public function findSubgraph(name:String):Subgraph
 	{
 		// Search direct subgraphs
-		for each(var subgraph:Subgraph in _subgraphs) {
+		var subgraphs:Array = this.subgraphs;
+		for each(var subgraph:Subgraph in subgraphs) {
 			if(subgraph.elementName == name) {
 				return subgraph;
 			}
@@ -339,6 +236,24 @@ public class GraphBase extends GraphElement
 	private function indent(value:String):String
 	{
 		return value.replace(/^/gm, "  ");
+	}
+
+
+	//----------------------------------
+	//	Deserialization
+	//----------------------------------
+
+	/** @private */
+	override public function deserialize(value:Object):void
+	{
+		// Set bounding box
+		if(attributes.bb != null) {
+			var arr:Array = attributes.bb.split(",").map(function(item:String,...args):int{return parseInt(item)});
+			var point:Point = new Point(parseInt(arr[0]), parseInt(arr[3]));
+			point = toLocal(point);
+			x = point.x;
+			y = point.y;
+		}
 	}
 }
 }

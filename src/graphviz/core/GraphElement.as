@@ -1,7 +1,9 @@
 package graphviz.core
 {
+import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
 import flash.geom.Point;
+import flash.errors.IllegalOperationError;
 
 /**
  *	This class represents the base class for all elements on a graph.
@@ -48,11 +50,21 @@ public class GraphElement extends Sprite
 	//----------------------------------
 	//	Graph
 	//----------------------------------
-	
+
 	/**
-	 *	The graph this element belongs to.
+	 *	The top level graph this element belongs to.
 	 */
-	public var graph:GraphBase;
+	public function get graph():Graph
+	{
+		var parent:DisplayObjectContainer = this;
+		while(parent) {
+			if(parent is Graph) {
+				return parent as Graph;
+			}
+			parent = parent.parent;
+		}
+		return null;
+	}
 
 
 	//----------------------------------
@@ -120,12 +132,18 @@ public class GraphElement extends Sprite
 	{
 		var ret:Point = new Point(point.x, point.y);
 		var element:GraphElement = this;
-		while(element.graph) {
+		while(element.parent is GraphElement) {
 			ret.x += element.x;
 			ret.y += element.y;
-			element = element.graph;
+			element = element.parent as GraphElement;
+			
+			// Only return global point if this element is attached to a graph.
+			if(element is Graph) {
+				return ret;
+			}
 		}
-		return ret;
+		
+		throw new IllegalOperationError("Element is not attached to a graph");
 	}
 	
 	/**
@@ -139,12 +157,18 @@ public class GraphElement extends Sprite
 	{
 		var ret:Point = new Point(point.x, point.y);
 		var element:GraphElement = this;
-		while(element.graph) {
+		while(element.parent is GraphElement) {
 			ret.x -= element.x;
 			ret.y -= element.y;
-			element = element.graph;
+			element = element.parent as GraphElement;
+
+			// Only return local point if this element is attached to a graph.
+			if(element is Graph) {
+				return ret;
+			}
 		}
-		return ret;
+		
+		throw new IllegalOperationError("Element is not attached to a graph");
 	}
 	
 
@@ -170,16 +194,29 @@ public class GraphElement extends Sprite
 		var arr:Array = [];
 		var attributes:Object = this.attributes;
 		for(var key:String in attributes) {
-			arr.push(key + "=\"" + attributes[key].replace("\"", "\\\"") + "\"");
+			arr.push(key + "=\"" + attributes[key].toString().replace("\"", "\\\"") + "\"");
 		}
 		return (arr.length ? arr.join(", ") : null);
 	}
+
+
+	//----------------------------------
+	//	Deserialization
+	//----------------------------------
 
 	/**
 	 *	Deserializes the node from an AST object.
 	 */
 	public function deserialize(value:Object):void
 	{
+		// Set position
+		if(attributes.pos != null) {
+			var arr:Array = attributes.pos.split(",");
+			var point:Point = new Point(parseInt(arr[0]), parseInt(arr[1]));
+			point = toLocal(point);
+			x = point.x;
+			y = point.y;
+		}
 	}
 }
 }

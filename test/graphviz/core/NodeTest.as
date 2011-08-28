@@ -38,8 +38,8 @@ public class NodeTest
 		var point:Point = new Point(10, 20);
 		var graph:Graph = new Graph();
 		var subgraph:Subgraph = new Subgraph();
-		graph.addSubgraph(subgraph);
-		subgraph.addNode(node);
+		graph.addChild(subgraph);
+		subgraph.addChild(node);
 		
 		graph.x = 30;
 		graph.y = 40;
@@ -59,8 +59,8 @@ public class NodeTest
 		var point:Point = new Point(130, 160);
 		var graph:Graph = new Graph();
 		var subgraph:Subgraph = new Subgraph();
-		graph.addSubgraph(subgraph);
-		subgraph.addNode(node);
+		graph.addChild(subgraph);
+		subgraph.addChild(node);
 		
 		graph.x = 30;
 		graph.y = 40;
@@ -82,7 +82,9 @@ public class NodeTest
 	[Test]
 	public function shouldSerialize():void
 	{
-		Assert.assertEquals("node1;", node.serialize());
+		node.width = 54;
+		node.height = 23;
+		Assert.assertEquals("node1 [width=\"0.75\", height=\"0.319\"];", node.serialize());
 	}
 }
 }

@@ -17,6 +17,18 @@ public class Graph extends GraphBase
 	//--------------------------------------------------------------------------
 	
 	/**
+	 *	The DPI used for all graphs.
+	 */
+	static public const DPI:Number = 72.0;
+	
+	
+	//--------------------------------------------------------------------------
+	//
+	//	Constructor
+	//
+	//--------------------------------------------------------------------------
+	
+	/**
 	 *	Constructor.
 	 */
 	public function Graph()
@@ -60,7 +72,7 @@ public class Graph extends GraphBase
 	override public function get attributes():Object
 	{
 		return {
-			dpi: "72"
+			dpi: DPI
 		};
 	}
 
