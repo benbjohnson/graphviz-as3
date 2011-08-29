@@ -18,9 +18,12 @@ public class Node extends GraphElement
 	/**
 	 *	Constructor.
 	 */
-	public function Node()
+	public function Node(width:Number=0, height:Number=0)
 	{
 		super();
+		
+		this.width  = width;
+		this.height = height;
 	}
 
 
@@ -50,7 +53,9 @@ public class Node extends GraphElement
 	{
 		return {
 			width:  MathUtil.round(this.width/Graph.DPI, 3),
-			height: MathUtil.round(this.height/Graph.DPI, 3)
+			height: MathUtil.round(this.height/Graph.DPI, 3),
+			shape: "box",
+			label: ""
 		};
 	}
 
@@ -60,6 +65,21 @@ public class Node extends GraphElement
 	//	Methods
 	//
 	//--------------------------------------------------------------------------
+	
+	//----------------------------------
+	//	Drawing
+	//----------------------------------
+
+	/** @private */
+	override public function draw():void
+	{
+		super.draw();
+		
+		graphics.lineStyle(0x000000, 0.5);
+		graphics.drawRect(0, 0, width, height);
+		graphics.endFill();
+	}
+	
 	
 	//----------------------------------
 	//	Serialization
@@ -99,6 +119,8 @@ public class Node extends GraphElement
 			// "pos" is specified as the center point. Convert to upper left.
 			x = point.x - (width/2);
 			y = point.y - (height/2);
+			
+			trace("node: " + elementName + " : " + x + ", " + y);
 		}
 	}
 }

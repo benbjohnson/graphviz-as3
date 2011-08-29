@@ -84,7 +84,7 @@ public class NodeTest
 	{
 		node.width = 54;
 		node.height = 23;
-		Assert.assertEquals("node1 [height=\"0.319\", width=\"0.75\"];", node.serialize());
+		Assert.assertEquals("node1 [height=\"0.319\", label=\"\", shape=\"box\", width=\"0.75\"];", node.serialize());
 	}
 
 

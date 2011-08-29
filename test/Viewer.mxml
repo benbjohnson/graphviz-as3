@@ -1,0 +1,71 @@
+<s:WindowedApplication
+	xmlns:fx="http://ns.adobe.com/mxml/2009"
+	xmlns:mx="library://ns.adobe.com/flex/mx"
+	xmlns:s="library://ns.adobe.com/flex/spark"
+	xmlns="graphviz.core.*"
+	xmlns:mxml="graphviz.mxml.*"
+	title="Graphviz AS3 Viewer"
+	creationComplete="onCreationComplete(event)"
+>
+	<fx:Script>
+		<![CDATA[
+		
+		import graphviz.core.Graph;
+		import graphviz.core.Edge;
+		import graphviz.core.Node;
+		import graphviz.core.Subgraph;
+		
+		
+		//----------------------------------------------------------------------
+		//
+		//	Events
+		//
+		//----------------------------------------------------------------------
+
+		private function onCreationComplete(event:Event):void
+		{
+			var o:Object = {};
+			
+			var graph:Graph = new Graph();
+			graph.addChild(o.startNode = new Node(50, 50));
+
+			var subgraph0:Subgraph = new Subgraph();
+			subgraph0.addChild(o.a0 = new Node(50, 50));
+			subgraph0.addChild(o.a1 = new Node(50, 50));
+			subgraph0.addChild(o.a2 = new Node(50, 50));
+			subgraph0.addChild(o.a3 = new Node(50, 50));
+			subgraph0.addChild(new Edge(o.a0, o.a1, true));
+			subgraph0.addChild(new Edge(o.a1, o.a2, true));
+			subgraph0.addChild(new Edge(o.a2, o.a3, true));
+			subgraph0.addChild(new Edge(o.a3, o.a0, true));
+			graph.addChild(subgraph0);
+
+			var subgraph1:Subgraph = new Subgraph();
+			subgraph1.addChild(o.b0 = new Node(50, 50));
+			subgraph1.addChild(o.b1 = new Node(50, 50));
+			subgraph1.addChild(o.b2 = new Node(50, 50));
+			subgraph1.addChild(o.b3 = new Node(50, 50));
+			subgraph1.addChild(new Edge(o.b0, o.b1, true));
+			subgraph1.addChild(new Edge(o.b1, o.b2, true));
+			subgraph1.addChild(new Edge(o.b2, o.b3, true));
+			subgraph1.addChild(new Edge(o.b3, o.b0, true));
+			graph.addChild(subgraph1);
+			
+			graph.addChild(o.endNode = new Node(50, 50));
+
+			graph.addChild(new Edge(o.startNode, o.a0, true));
+			graph.addChild(new Edge(o.startNode, o.b0, true));
+			graph.addChild(new Edge(o.a3, o.endNode, true));
+			graph.addChild(new Edge(o.b3, o.endNode, true));
+			
+			graph.layout();
+			container.addChild(graph);
+		}
+		
+		]]>
+	</fx:Script>
+
+	<mx:Canvas width="100%" height="100%">
+		<mx:UIComponent id="container" width="100%" height="100%"/>
+	</mx:Canvas>
+</s:WindowedApplication>

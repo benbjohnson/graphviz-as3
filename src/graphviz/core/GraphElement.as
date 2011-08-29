@@ -39,6 +39,7 @@ public class GraphElement extends Sprite
 	public function GraphElement()
 	{
 		super();
+		_elementId = ++GraphElement.currentId;
 	}
 
 
@@ -115,9 +116,6 @@ public class GraphElement extends Sprite
 	 */
 	public function get elementId():uint
 	{
-		if(_elementId == 0) {
-			_elementId = ++GraphElement.currentId;
-		}
 		return _elementId;
 	}
 	
@@ -173,6 +171,7 @@ public class GraphElement extends Sprite
 	 */
 	public function draw():void
 	{
+		graphics.clear();
 	}
 
 
@@ -278,11 +277,9 @@ public class GraphElement extends Sprite
 		}
 		
 		keys.sort();
-		trace("keys: " + keys.join(","));
 		for each(key in keys) {
 			arr.push(key + "=\"" + attributes[key].toString().replace("\"", "\\\"") + "\"");
 		}
-		trace("arr: " + arr.join(", "));
 
 		return (arr.length ? arr.join(", ") : null);
 	}

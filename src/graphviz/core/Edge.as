@@ -1,5 +1,7 @@
 package graphviz.core
 {
+import flash.display.LineScaleMode;
+import flash.display.CapsStyle;
 import flash.geom.Point;
 import flash.errors.IllegalOperationError;
 
@@ -86,6 +88,26 @@ public class Edge extends GraphElement
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
+	//	Drawing
+	//----------------------------------
+
+	/** @private */
+	override public function draw():void
+	{
+		super.draw();
+
+		if(path.length > 0) {
+			graphics.lineStyle(1, 0xFF0000, 1, true, LineScaleMode.NORMAL, CapsStyle.NONE);
+			
+			graphics.moveTo(path[0].x, path[0].y);
+			for each(var point:Point in path) {
+				graphics.lineTo(point.x, point.y);
+			}
+		}
+	}
+	
+	
+	//----------------------------------
 	//	Serialization
 	//----------------------------------
 
@@ -137,15 +159,21 @@ public class Edge extends GraphElement
 			
 			// Find min x,y
 			var min:Point = new Point(100000, 100000);
+			var max:Point = new Point(0, 0);
 			for each(point in path) {
 				min.x = Math.min(min.x, point.x);
 				min.y = Math.min(min.y, point.y);
+				max.x = Math.max(max.x, point.x);
+				max.y = Math.max(max.y, point.y);
 			}
 			
 			// Set position relative to min point
 			min = toLocal(min);
+			max = toLocal(max);
 			x = min.x;
 			y = min.y;
+			width  = max.x - min.x;
+			height = max.y - min.y;
 			
 			// Convert path points to local
 			this.path = path.map(function(item:Point,...args):Point{

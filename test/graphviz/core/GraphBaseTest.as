@@ -140,7 +140,7 @@ public class GraphBaseTest
 	{
 		graph.addChild(new Subgraph());
 		graph.addChild(new Subgraph());
-		Assert.assertEquals(graph.subgraphs[1], graph.findSubgraph("subgraph2"));
+		Assert.assertEquals(graph.subgraphs[1], graph.findSubgraph("cluster_subgraph2"));
 	}
 
 	[Test]
@@ -148,7 +148,7 @@ public class GraphBaseTest
 	{
 		graph.addChild(new Subgraph());
 		graph.subgraphs[0].addChild(new Subgraph());
-		Assert.assertEquals(graph.subgraphs[0].subgraphs[0], graph.findSubgraph("subgraph2"));
+		Assert.assertEquals(graph.subgraphs[0].subgraphs[0], graph.findSubgraph("cluster_subgraph2"));
 	}
 
 

@@ -1,4 +1,5 @@
 <!-- mxmlc +configname=air -load-config+=etc/TestRunner-config.xml test/TestRunner.as -->
+<!-- mxmlc +configname=air -load-config+=etc/Viewer-config.xml test/Viewer.mxml -->
 <!-- compc +configname=air -load-config+=etc/graphviz-config.xml -->
 
 <project name="graphviz" basedir="." default="build">
@@ -28,10 +29,11 @@
 		<mkdir dir="${target.dir}/test"/>
 
 		<copy file="${etc.dir}/TestRunner-app.xml" tofile="${target.dir}/test/TestRunner-app.xml" overwrite="true"/>
+		<copy file="${etc.dir}/Viewer-app.xml" tofile="${target.dir}/test/Viewer-app.xml" overwrite="true"/>
 	</target>
 
 	<!-- Target: Build -->
-	<target name="build" depends="build-swc,build-test-runner"/>
+	<target name="build" depends="build-swc,build-test-runner,build-viewer"/>
 
 	<target name="build-swc" depends="init">
 		<java jar="${compc.jar}" fork="true" failonerror="true">
@@ -42,7 +44,6 @@
 		</java>
 	</target>
 	
-	<!-- Target: Test -->
 	<target name="build-test-runner" depends="init">
 		<java jar="${mxmlc.jar}" fork="true" failonerror="true">
 			<jvmarg value="-Xmx1024M"/>
@@ -51,6 +52,17 @@
 			<arg value="+configname=air"/>
 			<arg value="-load-config+=${etc.dir}/TestRunner-config.xml"/>
 			<arg value="${test.dir}/TestRunner.as"/>
+		</java>
+	</target>
+
+	<target name="build-viewer" depends="init">
+		<java jar="${mxmlc.jar}" fork="true" failonerror="true">
+			<jvmarg value="-Xmx1024M"/>
+			<jvmarg value="-Xms512M"/>
+			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+			<arg value="+configname=air"/>
+			<arg value="-load-config+=${etc.dir}/Viewer-config.xml"/>
+			<arg value="${test.dir}/Viewer.mxml"/>
 		</java>
 	</target>
 

@@ -1,0 +1,15 @@
+<flex-config>
+	<output>../target/test/Viewer.swf</output>
+	<warnings>true</warnings>
+
+	<compiler>
+		<debug>true</debug>
+		<allow-source-path-overlap>true</allow-source-path-overlap>
+		<verbose-stacktraces>true</verbose-stacktraces>
+		
+		<source-path>
+			<path-element>../src</path-element>
+			<path-element>../test</path-element>
+		</source-path>
+	</compiler>
+</flex-config>

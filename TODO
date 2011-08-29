@@ -1,4 +1,2 @@
-* Edge Deserialization
-  * Parse pos into GraphicsPath.
-  * Parse _draw_, _hdraw_, _tdraw_, etc into arrays of IGraphicsData objects.
-  
+* Parse _draw_, _hdraw_, _tdraw_, etc into arrays of IGraphicsData objects.
+* Add default node, edge, subgraph, graph implementations.  

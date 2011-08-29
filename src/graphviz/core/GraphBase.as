@@ -195,6 +195,31 @@ public class GraphBase extends GraphElement
 
 
 	//---------------------------------
+	//	Drawing
+	//---------------------------------
+
+	/** @private */
+	override public function invalidate():void
+	{
+		super.invalidate();
+		
+		var children:Array = this.children;
+		for each(var child:GraphElement in children) {
+			child.invalidate();
+		}
+	}
+	
+	/** @private */
+	override public function draw():void
+	{
+		super.draw();
+		
+		//graphics.lineStyle(1, 0x666666);
+		//graphics.drawRect(0, 0, width, height);
+	}
+
+	
+	//---------------------------------
 	//	Serialization
 	//---------------------------------
 
@@ -266,9 +291,9 @@ public class GraphBase extends GraphElement
 		for each(var childValue:Object in value.children) {
 			var child:GraphElement;
 			switch(childValue.type) {
-				case 'SUBGRAPH': child = findSubgraph(childValue.id); break;
-				case 'NODE': child = findNode(childValue.id); break;
-				case 'EDGE': child = findEdge(childValue.tail, childValue.head); break;
+				case 'SUBGRAPH': child = graph.findSubgraph(childValue.id); break;
+				case 'NODE': child = graph.findNode(childValue.id); break;
+				case 'EDGE': child = graph.findEdge(childValue.tail, childValue.head); break;
 				default: throw new IllegalOperationError("Invalid serialization type: " + childValue.type);
 			}
 			
@@ -280,6 +305,9 @@ public class GraphBase extends GraphElement
 				throw new IllegalOperationError("Cannot find child for serialization: " + (childValue.type == "EDGE" ? childValue.tail + "-" + childValue.head : childValue.id));
 			}
 		}
+		
+		// Invalidate graph
+		invalidate();
 	}
 }
 }

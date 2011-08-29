@@ -1,6 +1,7 @@
 package graphviz.filesystem
 {
 import graphviz.core.Graph;
+import graphviz.errors.DotError;
 import graphviz.parsers.DotParser;
 import graphviz.utils.FileUtil;
 
@@ -120,7 +121,10 @@ public class Dot extends EventDispatcher
 		var file:File = File.createTempFile();
 		FileUtil.write(file, input);
 		
+		trace("input: " + file.nativePath);
+		
 		// Run DOT process
+		var errored:Boolean = false;
 		var process:NativeProcess = new NativeProcess();
 		var output:Array = [];
 		process.addEventListener("standardOutputData",
@@ -130,18 +134,23 @@ public class Dot extends EventDispatcher
 		);
 		process.addEventListener("standardErrorData",
 			function(event:ProgressEvent):void{
-				trace("ERR: "+ process.standardError.readUTFBytes(process.standardError.bytesAvailable));
+				var message:String = process.standardError.readUTFBytes(process.standardError.bytesAvailable);
+				errored = true;
+				throw new DotError(message);
 			}
 		);
 		process.addEventListener(NativeProcessExitEvent.EXIT,
 			function(event:NativeProcessExitEvent):void{
+				trace(output.join(""));
 				// Parse xdot into AST and deserialize back into original graph
 				var parser:DotParser = new DotParser();
 				var data:Object = parser.parse(output.join(""));
 				graph.deserialize(data);
 			
-				// Remove temp file
-				FileUtil.deleteFile(file);
+				// Remove temp file if no error occurred
+				if(!errored) {
+					//FileUtil.deleteFile(file);
+				}
 			
 				// Notify that layout is complete
 				dispatchEvent(new Event(Event.COMPLETE));

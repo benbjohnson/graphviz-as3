@@ -33,7 +33,39 @@ public class Subgraph extends GraphBase
 	/** @private */
 	override public function get elementName():String
 	{
-		return "subgraph" + elementId.toString();
+		return "cluster_subgraph" + elementId.toString();
+	}
+
+
+	//----------------------------------
+	//	Attributes
+	//----------------------------------
+
+	/** @private */
+	override public function get attributes():Object
+	{
+		return {
+		};
+	}
+
+
+	//--------------------------------------------------------------------------
+	//
+	//	Methods
+	//
+	//--------------------------------------------------------------------------
+
+	//----------------------------------
+	//	Drawing
+	//----------------------------------
+
+	/** @private */
+	override public function draw():void
+	{
+		super.draw();
+		
+		graphics.lineStyle(1, 0x000000, 0.5);
+		graphics.drawRect(0, 0, width, height);
 	}
 }
 }

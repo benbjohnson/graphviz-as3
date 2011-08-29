@@ -1,27 +1,26 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <application xmlns="http://ns.adobe.com/air/application/2.7">
-	<id>TestRunner</id>
+	<id>Graphviz</id>
 	<versionNumber>1.0.0</versionNumber>
-	<filename>TestRunner</filename>
-	<name>TestRunner</name>
+	<filename>Graphviz</filename>
+	<name>Graphviz</name>
 	<initialWindow>
-		<title>TestRunner</title>
-		<content>TestRunner.swf</content>
+		<title>Graphviz</title>
+		<content>Viewer.swf</content>
 		<systemChrome>standard</systemChrome>
 		<transparent>false</transparent>
 		<visible>true</visible>
 		<minimizable>true</minimizable>
-		<maximizable>false</maximizable>
+		<maximizable>true</maximizable>
 		<resizable>true</resizable>
 		<x>0</x>
 		<y>0</y>
-		<width>1024</width>
+		<width>800</width>
 		<height>600</height>
-		<minSize>320 240</minSize>
-		<maxSize>1280 960</maxSize>
+		<minSize>200 40</minSize>
 	</initialWindow> 
-	<installFolder>TestRunner</installFolder>
-	<programMenuFolder>TestRunner</programMenuFolder>
+	<installFolder>Graphviz</installFolder>
+	<programMenuFolder>Graphviz</programMenuFolder>
 	<customUpdateUI>false</customUpdateUI>
 	<allowBrowserInvocation>false</allowBrowserInvocation>
 	<supportedProfiles>extendedDesktop</supportedProfiles>

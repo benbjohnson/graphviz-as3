@@ -61,7 +61,7 @@ public class Graph extends GraphBase
 	/**
 	 *	A flag stating if the graph is a directed graph.
 	 */
-	public var directed:Boolean;
+	public var directed:Boolean = true;
 
 
 	//----------------------------------

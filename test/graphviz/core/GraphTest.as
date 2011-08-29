@@ -74,15 +74,15 @@ public class GraphTest
 		Assert.assertEquals(
 			"digraph {\n" +
 			"  graph [dpi=\"72\", pad=\"0\", splines=\"polyline\"];\n" +
-			"  subgraph subgraph1 {\n" +
-			"    node2 [height=\"0\", width=\"0\"];\n" +
-			"    node3 [height=\"0\", width=\"0\"];\n" +
-			"    node4 [height=\"0\", width=\"0\"];\n" +
+			"  subgraph cluster_subgraph1 {\n" +
+			"    node2 [height=\"0\", label=\"\", shape=\"box\", width=\"0\"];\n" +
+			"    node3 [height=\"0\", label=\"\", shape=\"box\", width=\"0\"];\n" +
+			"    node4 [height=\"0\", label=\"\", shape=\"box\", width=\"0\"];\n" +
 			"    node2 -> node3;\n" +
 			"    node2 -- node4;\n" +
 			"  }\n" +
-			"  node5 [height=\"0\", width=\"0\"];\n" +
-			"  node6 [height=\"0\", width=\"0\"];\n" +
+			"  node5 [height=\"0\", label=\"\", shape=\"box\", width=\"0\"];\n" +
+			"  node6 [height=\"0\", label=\"\", shape=\"box\", width=\"0\"];\n" +
 			"  node5 -- node6;\n" +
 			"}",
 			graph.serialize()
