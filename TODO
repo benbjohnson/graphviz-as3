@@ -1,1 +1,4 @@
-* Add tests for node x/y returned from pos.
+* Edge Deserialization
+  * Parse pos into GraphicsPath.
+  * Parse _draw_, _hdraw_, _tdraw_, etc into arrays of IGraphicsData objects.
+  

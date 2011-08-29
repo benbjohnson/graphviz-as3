@@ -36,7 +36,7 @@ public class GraphTest
 		graph.directed = false;
 		Assert.assertEquals(
 			"graph {\n" +
-			"  graph [dpi=\"72\"];\n" +
+			"  graph [splines=\"polyline\", dpi=\"72\", pad=\"0\"];\n" +
 			"}",
 			graph.serialize()
 		);
@@ -48,7 +48,7 @@ public class GraphTest
 		graph.directed = true;
 		Assert.assertEquals(
 			"digraph {\n" +
-			"  graph [dpi=\"72\"];\n" +
+			"  graph [splines=\"polyline\", dpi=\"72\", pad=\"0\"];\n" +
 			"}",
 			graph.serialize()
 		);
@@ -73,7 +73,7 @@ public class GraphTest
 
 		Assert.assertEquals(
 			"digraph {\n" +
-			"  graph [dpi=\"72\"];\n" +
+			"  graph [splines=\"polyline\", dpi=\"72\", pad=\"0\"];\n" +
 			"  subgraph subgraph1 {\n" +
 			"    node2 [width=\"0\", height=\"0\"];\n" +
 			"    node3 [width=\"0\", height=\"0\"];\n" +

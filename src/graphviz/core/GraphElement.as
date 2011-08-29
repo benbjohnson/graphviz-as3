@@ -2,6 +2,7 @@ package graphviz.core
 {
 import flash.display.DisplayObjectContainer;
 import flash.display.Sprite;
+import flash.events.Event;
 import flash.geom.Point;
 import flash.errors.IllegalOperationError;
 
@@ -154,6 +155,28 @@ public class GraphElement extends Sprite
 	//--------------------------------------------------------------------------
 
 	//----------------------------------
+	//	Drawing
+	//----------------------------------
+
+	/**
+	 *	Invalidates the element so that it can be redrawn on the next frame.
+	 */
+	public function invalidate():void
+	{
+		addEventListener(Event.ENTER_FRAME, onInvalidate);
+	}
+	
+	/**
+	 *	Draws the element to the screen. This method is overridden by the
+	 *	subclass. This method should not be called directly. Calling invalidate()
+	 *	will manage the drawing of elements.
+	 */
+	public function draw():void
+	{
+	}
+
+
+	//----------------------------------
 	//	Position
 	//----------------------------------
 
@@ -263,6 +286,19 @@ public class GraphElement extends Sprite
 	 */
 	public function deserialize(value:Object):void
 	{
+	}
+
+
+	//--------------------------------------------------------------------------
+	//
+	//	Events
+	//
+	//--------------------------------------------------------------------------
+
+	private function onInvalidate(event:Event):void
+	{
+		removeEventListener(Event.ENTER_FRAME, onInvalidate);
+		draw();
 	}
 }
 }

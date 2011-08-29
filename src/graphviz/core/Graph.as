@@ -72,7 +72,9 @@ public class Graph extends GraphBase
 	override public function get attributes():Object
 	{
 		return {
-			dpi: DPI
+			dpi: DPI,
+			pad: 0,
+			splines: "polyline"
 		};
 	}
 
