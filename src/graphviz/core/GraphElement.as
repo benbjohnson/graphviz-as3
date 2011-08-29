@@ -270,9 +270,20 @@ public class GraphElement extends Sprite
 	{
 		var arr:Array = [];
 		var attributes:Object = this.attributes;
-		for(var key:String in attributes) {
+
+		var key:String;
+		var keys:Array = [];
+		for(key in attributes) {
+			keys.push(key);
+		}
+		
+		keys.sort();
+		trace("keys: " + keys.join(","));
+		for each(key in keys) {
 			arr.push(key + "=\"" + attributes[key].toString().replace("\"", "\\\"") + "\"");
 		}
+		trace("arr: " + arr.join(", "));
+
 		return (arr.length ? arr.join(", ") : null);
 	}
 

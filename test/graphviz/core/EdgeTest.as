@@ -105,6 +105,13 @@ public class EdgeTest
 
 		Assert.assertEquals(12, edge.x);
 		Assert.assertEquals(3, edge.y);
+		Assert.assertEquals(3, edge.path.length);
+		Assert.assertEquals(0, edge.path[0].x);
+		Assert.assertEquals(24, edge.path[0].y);
+		Assert.assertEquals(16, edge.path[1].x);
+		Assert.assertEquals(24, edge.path[1].y);
+		Assert.assertEquals(16, edge.path[2].x);
+		Assert.assertEquals(0, edge.path[2].y);
 	}
 }
 }
