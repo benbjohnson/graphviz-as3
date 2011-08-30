@@ -17,8 +17,8 @@ public class NodeTest
 	[Before]
 	public function setup():void
 	{
-		node = new Node();
 		GraphElement.resetId();
+		node = new Node();
 	}
 
 

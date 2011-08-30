@@ -1,6 +1,12 @@
 package graphviz.core
 {
+import graphviz.utils.MathUtil;
+
 import flash.display.DisplayObjectContainer;
+import flash.display.GraphicsPath;
+import flash.display.GraphicsSolidFill;
+import flash.display.GraphicsStroke;
+import flash.display.GraphicsEndFill;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
@@ -294,6 +300,132 @@ public class GraphElement extends Sprite
 	 */
 	public function deserialize(value:Object):void
 	{
+	}
+
+
+
+	//----------------------------------
+	//	Parsing
+	//----------------------------------
+
+	/**
+	 *	Parses a drawing command into a series of IGraphicsData.
+	 *
+	 *	@param value    The string representation of the draw command.
+	 *
+	 *	@return       A list of graphics commands.
+	 */
+	public function parseDrawCommand(value:String):Array
+	{
+		var count:int = 0;
+		var commands:Array = [];
+		var elements:Array = value.split(" ");
+		var subelements:Array;
+		var path:GraphicsPath;
+		var filled:Boolean = false;
+		
+		while(elements.length) {
+			var action:String = elements.shift();
+			switch(action) {
+				case 'E':	// Filled ellipsis
+				case 'e':	// Unfilled ellipsis
+					// NOT IMPLEMENTED
+					elements.splice(0, 4);
+					break;
+					
+				case 'P':	// Filled polygon
+				case 'p':	// Unfilled polygon
+					count = parseInt(elements.shift()) * 2;
+					subelements = elements.splice(0, count);
+					subelements = subelements.concat(subelements.slice(0, 2));
+					commands.push(createGraphicsPath(subelements));
+					break;
+
+				case 'L':	// Polyline
+					count = parseInt(elements.shift()) * 2;
+					subelements = elements.splice(0, count);
+					commands.push(createGraphicsPath(subelements));
+					break;
+
+				case 'B':	// Unfilled bspline
+				case 'b':	// Filled bspline
+					// NOT IMPLEMENTED
+					count = parseInt(elements.shift()) * 2;
+					elements.splice(0, count);
+					break;
+
+				case 'T':	// Text
+					// NOT IMPLEMENTED
+					elements.splice(0, 6);
+					break;
+
+				case 'C':	// Set fill color
+					elements.splice(0, 1);
+					commands.push(createGraphicsSolidFill(elements.splice(0, 1)));
+					break;
+
+				case 'c':	// Set pen color
+					elements.splice(0, 1);
+					commands.push(createGraphicsStroke(elements.splice(0, 1)));
+					break;
+
+				case 'F':	// Set font
+					break;
+
+				case 'S':	// Set style
+					break;
+
+				case 'I':	// Image
+					break;
+			}
+		}
+		
+		// End fill if a fill was started
+		if(filled) {
+			commands.push(new GraphicsEndFill());
+		}
+		
+		return commands;
+	}
+
+	private function createGraphicsPath(elements:Array):GraphicsPath
+	{
+		var path:GraphicsPath = new GraphicsPath();
+		
+		// Create graphics path
+		for(var i:int=0; i<elements.length; i+=2) {
+			var point:Point = new Point(parseInt(elements[i]), parseInt(elements[i+1]));
+			point = toLocal(normalizeCoord(point));
+
+			if(i == 0) {
+				path.moveTo(point.x, point.y);
+			}
+			else {
+				path.lineTo(point.x, point.y);
+			}
+		}
+		
+		return path;
+	}
+
+	private function createGraphicsSolidFill(color:String):GraphicsSolidFill
+	{
+		var match:Array = color.match(/^-#(.{6})(.{2})$/);
+		var fill:GraphicsSolidFill = new GraphicsSolidFill();
+		fill.color = parseInt(match[1], 16);
+		fill.alpha = MathUtil.round(parseInt(match[2], 16)/255.0, 2);
+		return fill;
+	}
+
+	private function createGraphicsStroke(color:String):GraphicsStroke
+	{
+		var match:Array = color.match(/^-#(.{6})(.{2})$/);
+		var stroke:GraphicsStroke = new GraphicsStroke();
+		var fill:GraphicsSolidFill = new GraphicsSolidFill();
+		stroke.fill = fill;
+		fill.color = parseInt(match[1], 16);
+		fill.alpha = MathUtil.round(parseInt(match[2], 16)/255.0, 2);
+		return stroke;
 	}
 
 

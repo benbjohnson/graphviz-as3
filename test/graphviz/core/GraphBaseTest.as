@@ -10,6 +10,7 @@ public class GraphBaseTest
 	//
 	//---------------------------------------------------------------------
 	
+	private var o:Object;
 	private var graph:GraphBase;
 	
 	[Before]
@@ -17,6 +18,7 @@ public class GraphBaseTest
 	{
 		GraphElement.resetId();
 		graph = new GraphBase();
+		o = {};
 	}
 
 
@@ -54,7 +56,7 @@ public class GraphBaseTest
 	{
 		graph.addChild(new Node());
 		graph.addChild(new Node());
-		Assert.assertEquals(graph.nodes[1], graph.findNode("node2"));
+		Assert.assertEquals(graph.nodes[1], graph.findNode("node3"));
 	}
 
 	[Test]
@@ -63,7 +65,7 @@ public class GraphBaseTest
 		graph.addChild(new Node());
 		graph.addChild(new Subgraph());
 		graph.subgraphs[0].addChild(new Node());
-		Assert.assertEquals(graph.subgraphs[0].nodes[0], graph.findNode("node2"));
+		Assert.assertEquals(graph.subgraphs[0].nodes[0], graph.findNode("node4"));
 	}
 
 
@@ -87,7 +89,7 @@ public class GraphBaseTest
 	[Test]
 	public function shouldRemoveEdge():void
 	{
-		var edge:Edge = new Edge(new Node(), new Node())
+		var edge:Edge = new Edge(new Node(), new Node());
 		graph.addChild(edge);
 		graph.removeChild(edge);
 		Assert.assertEquals(0, graph.edges.length);
@@ -97,18 +99,26 @@ public class GraphBaseTest
 	[Test]
 	public function shouldFindDirectEdge():void
 	{
-		graph.addChild(new Edge(new Node(), new Node()));
-		graph.addChild(new Edge(new Node(), new Node()));
-		Assert.assertEquals(graph.edges[1], graph.findEdge("node3", "node4"));
+		graph.addChild(o.a = new Node());
+		graph.addChild(o.b = new Node());
+		graph.addChild(o.c = new Node());
+		graph.addChild(o.d = new Node());
+		graph.addChild(new Edge(o.a, o.b));
+		graph.addChild(new Edge(o.c, o.d));
+		Assert.assertEquals(graph.edges[1], graph.findEdge("node4", "node5"));
 	}
 
 	[Test]
 	public function shouldFindIndirectEdge():void
 	{
-		graph.addChild(new Edge(new Node(), new Node()));
+		graph.addChild(o.a = new Node());
+		graph.addChild(o.b = new Node());
+		graph.addChild(new Edge(o.a, o.b));
 		graph.addChild(new Subgraph());
-		graph.subgraphs[0].addChild(new Edge(new Node(), new Node()));
-		Assert.assertEquals(graph.subgraphs[0].edges[0], graph.findEdge("node3", "node4"));
+		graph.subgraphs[0].addChild(o.c = new Node());
+		graph.subgraphs[0].addChild(o.d = new Node());
+		graph.subgraphs[0].addChild(new Edge(o.c, o.d));
+		Assert.assertEquals(graph.subgraphs[0].edges[0], graph.findEdge("node6", "node7"));
 	}
 
 
@@ -140,7 +150,7 @@ public class GraphBaseTest
 	{
 		graph.addChild(new Subgraph());
 		graph.addChild(new Subgraph());
-		Assert.assertEquals(graph.subgraphs[1], graph.findSubgraph("cluster_subgraph2"));
+		Assert.assertEquals(graph.subgraphs[1], graph.findSubgraph("cluster_subgraph3"));
 	}
 
 	[Test]
@@ -148,7 +158,7 @@ public class GraphBaseTest
 	{
 		graph.addChild(new Subgraph());
 		graph.subgraphs[0].addChild(new Subgraph());
-		Assert.assertEquals(graph.subgraphs[0].subgraphs[0], graph.findSubgraph("cluster_subgraph2"));
+		Assert.assertEquals(graph.subgraphs[0].subgraphs[0], graph.findSubgraph("cluster_subgraph3"));
 	}
 
 
