@@ -74,10 +74,6 @@ public class Node extends GraphElement
 	override public function draw():void
 	{
 		super.draw();
-		
-		graphics.lineStyle(0x000000, 0.5);
-		graphics.drawRect(0, 0, width, height);
-		graphics.endFill();
 	}
 	
 	
@@ -119,8 +115,11 @@ public class Node extends GraphElement
 			// "pos" is specified as the center point. Convert to upper left.
 			x = point.x - (width/2);
 			y = point.y - (height/2);
-			
-			trace("node: " + elementName + " : " + x + ", " + y);
+		}
+
+		// Parse draw command
+		if(value.attributes._draw_ != null) {
+			drawCommands = parseDrawCommand(value.attributes._draw_);
 		}
 	}
 }

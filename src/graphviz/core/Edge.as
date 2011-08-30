@@ -1,5 +1,6 @@
 package graphviz.core
 {
+import flash.display.IGraphicsData;
 import flash.display.LineScaleMode;
 import flash.display.CapsStyle;
 import flash.geom.Point;
@@ -60,6 +61,22 @@ public class Edge extends GraphElement
 	public var head:Node;
 
 
+
+	//----------------------------------
+	//	Draw commands
+	//----------------------------------
+	
+	/**
+	 *	A list of commands to draw the tail arrowhead.
+	 */
+	protected var tailDrawCommands:Vector.<IGraphicsData>;
+
+	/**
+	 *	A list of commands to draw the tail arrowhead.
+	 */
+	protected var headDrawCommands:Vector.<IGraphicsData>;
+
+
 	//----------------------------------
 	//	Directed
 	//----------------------------------
@@ -95,10 +112,12 @@ public class Edge extends GraphElement
 	override public function draw():void
 	{
 		super.draw();
-
+		drawPath();
+	}
+	
+	protected function drawPath():void
+	{
 		if(path.length > 0) {
-			graphics.lineStyle(1, 0xFF0000, 1, true, LineScaleMode.NORMAL, CapsStyle.NONE);
-			
 			graphics.moveTo(path[0].x, path[0].y);
 			for each(var point:Point in path) {
 				graphics.lineTo(point.x, point.y);
@@ -179,6 +198,16 @@ public class Edge extends GraphElement
 			this.path = path.map(function(item:Point,...args):Point{
 				return toLocal(item);
 			});
+		}
+
+		// Parse tail arrowhead
+		if(value.attributes._tdraw_ != null) {
+			tailDrawCommands = parseDrawCommand(value.attributes._tdraw_);
+		}
+
+		// Parse head arrowhead
+		if(value.attributes._hdraw_ != null) {
+			headDrawCommands = parseDrawCommand(value.attributes._hdraw_);
 		}
 	}
 }

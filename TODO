@@ -1,2 +1,0 @@
-* Parse _draw_, _hdraw_, _tdraw_, etc into arrays of IGraphicsData objects.
-* Add default node, edge, subgraph, graph implementations.  

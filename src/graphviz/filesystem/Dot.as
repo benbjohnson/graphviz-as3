@@ -121,7 +121,7 @@ public class Dot extends EventDispatcher
 		var file:File = File.createTempFile();
 		FileUtil.write(file, input);
 		
-		trace("input: " + file.nativePath);
+		//trace("input: " + file.nativePath);
 		
 		// Run DOT process
 		var errored:Boolean = false;
@@ -141,7 +141,7 @@ public class Dot extends EventDispatcher
 		);
 		process.addEventListener(NativeProcessExitEvent.EXIT,
 			function(event:NativeProcessExitEvent):void{
-				trace(output.join(""));
+				//trace(output.join(""));
 				// Parse xdot into AST and deserialize back into original graph
 				var parser:DotParser = new DotParser();
 				var data:Object = parser.parse(output.join(""));

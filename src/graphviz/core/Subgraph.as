@@ -63,9 +63,23 @@ public class Subgraph extends GraphBase
 	override public function draw():void
 	{
 		super.draw();
+	}
+
+	//----------------------------------
+	//	Deserialization
+	//----------------------------------
+
+	/**
+	 *	Deserializes the node from an AST object.
+	 */
+	override public function deserialize(value:Object):void
+	{
+		super.deserialize(value);
 		
-		graphics.lineStyle(1, 0x000000, 0.5);
-		graphics.drawRect(0, 0, width, height);
+		// Parse draw command
+		if(value.attributes._draw_ != null) {
+			drawCommands = parseDrawCommand(value.attributes._draw_);
+		}
 	}
 }
 }

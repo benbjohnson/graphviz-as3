@@ -10,6 +10,9 @@
 	<fx:Script>
 		<![CDATA[
 		
+		import graphviz.core.DefaultEdge;
+		import graphviz.core.DefaultNode;
+		import graphviz.core.DefaultSubgraph;
 		import graphviz.core.Graph;
 		import graphviz.core.Edge;
 		import graphviz.core.Node;
@@ -25,38 +28,39 @@
 		private function onCreationComplete(event:Event):void
 		{
 			var o:Object = {};
-			
-			var graph:Graph = new Graph();
-			graph.addChild(o.startNode = new Node(50, 50));
 
-			var subgraph0:Subgraph = new Subgraph();
-			subgraph0.addChild(o.a0 = new Node(50, 50));
-			subgraph0.addChild(o.a1 = new Node(50, 50));
-			subgraph0.addChild(o.a2 = new Node(50, 50));
-			subgraph0.addChild(o.a3 = new Node(50, 50));
-			subgraph0.addChild(new Edge(o.a0, o.a1, true));
-			subgraph0.addChild(new Edge(o.a1, o.a2, true));
-			subgraph0.addChild(new Edge(o.a2, o.a3, true));
-			subgraph0.addChild(new Edge(o.a3, o.a0, true));
+			var graph:Graph = new Graph();
+			graph.x = graph.y = 10;
+			graph.addChild(o.startNode = new DefaultNode(50, 50));
+
+			var subgraph0:DefaultSubgraph = new DefaultSubgraph();
+			subgraph0.addChild(o.a0 = new DefaultNode(50, 50));
+			subgraph0.addChild(o.a1 = new DefaultNode(50, 50));
+			subgraph0.addChild(o.a2 = new DefaultNode(50, 50));
+			subgraph0.addChild(o.a3 = new DefaultNode(50, 50));
+			subgraph0.addChild(new DefaultEdge(o.a0, o.a1, true));
+			subgraph0.addChild(new DefaultEdge(o.a1, o.a2, true));
+			subgraph0.addChild(new DefaultEdge(o.a2, o.a3, true));
+			subgraph0.addChild(new DefaultEdge(o.a3, o.a0, true));
 			graph.addChild(subgraph0);
 
-			var subgraph1:Subgraph = new Subgraph();
-			subgraph1.addChild(o.b0 = new Node(50, 50));
-			subgraph1.addChild(o.b1 = new Node(50, 50));
-			subgraph1.addChild(o.b2 = new Node(50, 50));
-			subgraph1.addChild(o.b3 = new Node(50, 50));
-			subgraph1.addChild(new Edge(o.b0, o.b1, true));
-			subgraph1.addChild(new Edge(o.b1, o.b2, true));
-			subgraph1.addChild(new Edge(o.b2, o.b3, true));
-			subgraph1.addChild(new Edge(o.b3, o.b0, true));
+			var subgraph1:DefaultSubgraph = new DefaultSubgraph();
+			subgraph1.addChild(o.b0 = new DefaultNode(50, 50));
+			subgraph1.addChild(o.b1 = new DefaultNode(50, 50));
+			subgraph1.addChild(o.b2 = new DefaultNode(50, 50));
+			subgraph1.addChild(o.b3 = new DefaultNode(50, 50));
+			subgraph1.addChild(new DefaultEdge(o.b0, o.b1, true));
+			subgraph1.addChild(new DefaultEdge(o.b1, o.b2, true));
+			subgraph1.addChild(new DefaultEdge(o.b2, o.b3, true));
+			subgraph1.addChild(new DefaultEdge(o.b3, o.b0, true));
 			graph.addChild(subgraph1);
 			
-			graph.addChild(o.endNode = new Node(50, 50));
+			graph.addChild(o.endNode = new DefaultNode(50, 50));
 
-			graph.addChild(new Edge(o.startNode, o.a0, true));
-			graph.addChild(new Edge(o.startNode, o.b0, true));
-			graph.addChild(new Edge(o.a3, o.endNode, true));
-			graph.addChild(new Edge(o.b3, o.endNode, true));
+			graph.addChild(new DefaultEdge(o.startNode, o.a0, true));
+			graph.addChild(new DefaultEdge(o.startNode, o.b0, true));
+			graph.addChild(new DefaultEdge(o.a3, o.endNode, true));
+			graph.addChild(new DefaultEdge(o.b3, o.endNode, true));
 			
 			graph.layout();
 			container.addChild(graph);

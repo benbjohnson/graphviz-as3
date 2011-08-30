@@ -7,6 +7,7 @@ import flash.display.GraphicsPath;
 import flash.display.GraphicsSolidFill;
 import flash.display.GraphicsStroke;
 import flash.display.GraphicsEndFill;
+import flash.display.IGraphicsData;
 import flash.display.Sprite;
 import flash.events.Event;
 import flash.geom.Point;
@@ -152,6 +153,16 @@ public class GraphElement extends Sprite
 	}
 
 
+	//----------------------------------
+	//	Draw commands
+	//----------------------------------
+	
+	/**
+	 *	A list of commands to draw the element.
+	 */
+	protected var drawCommands:Vector.<IGraphicsData>;
+
+
 	//--------------------------------------------------------------------------
 	//
 	//	Methods
@@ -178,6 +189,16 @@ public class GraphElement extends Sprite
 	public function draw():void
 	{
 		graphics.clear();
+	}
+
+	/**
+	 *	Executes a series of draw commands.
+	 */
+	public function executeDrawCommands(commands:Vector.<IGraphicsData>):void
+	{
+		if(commands) {
+			graphics.drawGraphicsData(commands);
+		}
 	}
 
 
@@ -311,14 +332,16 @@ public class GraphElement extends Sprite
 	/**
 	 *	Parses a drawing command into a series of IGraphicsData.
 	 *
-	 *	@param value    The string representation of the draw command.
+	 *	@param value        The string representation of the draw command.
+	 *	@param ignoreStyle  A flag stating that fill and strokes should be ignored.
 	 *
 	 *	@return       A list of graphics commands.
 	 */
-	public function parseDrawCommand(value:String):Array
+	public function parseDrawCommand(value:String,
+									 ignoreStyle:Boolean=false):Vector.<IGraphicsData>
 	{
 		var count:int = 0;
-		var commands:Array = [];
+		var commands:Vector.<IGraphicsData> = new Vector.<IGraphicsData>();
 		var elements:Array = value.split(" ");
 		var subelements:Array;
 		var path:GraphicsPath;
@@ -362,6 +385,7 @@ public class GraphElement extends Sprite
 				case 'C':	// Set fill color
 					elements.splice(0, 1);
 					commands.push(createGraphicsSolidFill(elements.splice(0, 1)));
+					filled = true;
 					break;
 
 				case 'c':	// Set pen color
@@ -394,7 +418,7 @@ public class GraphElement extends Sprite
 		
 		// Create graphics path
 		for(var i:int=0; i<elements.length; i+=2) {
-			var point:Point = new Point(parseInt(elements[i]), parseInt(elements[i+1]));
+			var point:Point = new Point(Math.round(parseFloat(elements[i])), Math.round(parseFloat(elements[i+1])));
 			point = toLocal(normalizeCoord(point));
 
 			if(i == 0) {
@@ -421,6 +445,7 @@ public class GraphElement extends Sprite
 	{
 		var match:Array = color.match(/^-#(.{6})(.{2})$/);
 		var stroke:GraphicsStroke = new GraphicsStroke();
+		stroke.thickness = 1;
 		var fill:GraphicsSolidFill = new GraphicsSolidFill();
 		stroke.fill = fill;
 		fill.color = parseInt(match[1], 16);
