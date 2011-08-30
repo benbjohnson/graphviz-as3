@@ -33,9 +33,7 @@
 	</target>
 
 	<!-- Target: Build -->
-	<target name="build" depends="build-swc,build-test-runner,build-viewer"/>
-
-	<target name="build-swc" depends="init">
+	<target name="build" depends="init">
 		<java jar="${compc.jar}" fork="true" failonerror="true">
 			<jvmarg value="-Xmx1024M"/>
 			<jvmarg value="-Xms512M"/>
@@ -66,6 +64,14 @@
 		</java>
 	</target>
 
+
+	<!-- Target: Package -->
+	<target name="package" depends="build">
+		<move
+			file="${target.dir}/graphviz.swc"
+			tofile="${target.dir}/graphviz-${graphviz.version}.swc"
+		/>
+	</target>
 
 	<!-- Target: Clean -->
 	<target name="clean">
