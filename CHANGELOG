@@ -1,0 +1,4 @@
+v0.1.0
+* Initial release.
+* Basic interface to DOT.
+* Default implementations of edges, nodes & subgraphs.
