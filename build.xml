@@ -38,6 +38,7 @@
 			<jvmarg value="-Xmx1024M"/>
 			<jvmarg value="-Xms512M"/>
 			<arg value="+flexlib=${FLEX_HOME}/frameworks"/>
+			<arg value="+configname=air"/>
 			<arg value="-load-config+=${etc.dir}/graphviz-config.xml"/>
 		</java>
 	</target>
